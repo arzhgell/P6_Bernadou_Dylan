@@ -28,15 +28,17 @@ async function displayData(photographer, medias) {
 
   const photographerModel = photographerFactory(photographer);
   const photographHeader = photographerModel.getPhotographHeader();
-  photographHeaderSection.innerHTML += photographHeader;
+  photographHeaderSection.innerHTML = photographHeader;
 
   const mediasContainer = document.querySelector('.medias-container');
+  const mediasModel = mediasFactory(medias);
 
-  medias.forEach((media) => {
-    const mediasModel = mediasFactory(media);
-    const mediaCard = mediasModel.getMediaCard();
-    mediasContainer.innerHTML += mediaCard;
-  });
+  const orderSelect = document.getElementById('order-select');
+
+  console.log(orderSelect.value);
+  const mediasList = mediasModel.getMediaList(orderSelect.value);
+
+  mediasContainer.innerHTML = mediasList;
 }
 
 async function init() {
@@ -50,3 +52,12 @@ async function init() {
 }
 
 init();
+
+document.addEventListener(
+  'input',
+  function (event) {
+    if (event.target.id !== 'order-select') return;
+    init();
+  },
+  false
+);

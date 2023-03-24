@@ -20,13 +20,13 @@ function photographerFactory(data) {
   }
 
   function getPhotographHeader() {
-    const html = `<div class="flex justify-between items-center px-12 py-16 rounded-md bg-lightGray">
+    const html = `<div class="flex justify-between items-center mt-16 px-12 py-16 rounded-md bg-lightGray">
         <div class="flex flex-col gap-4">
           <h1 class="text-secondary text-4xl">${name}</h1>
           <p class="text-primary text-2xl">
             ${city}, ${country}
           </p>
-          <p class="text-xl">${tagline}</p>
+          <p class="text-xl text-darkGray">${tagline}</p>
         </div>
         <button class="bg-primary rounded-md text-white px-3 py-5">Contactez-moi</button>
         <div class="overflow-hidden rounded-full aspect-square w-56 shadow-lg">

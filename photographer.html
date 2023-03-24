@@ -4,6 +4,10 @@
     <link href="src/assets/css/output.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <script
+      src="https://kit.fontawesome.com/ae0defa13c.js"
+      crossorigin="anonymous"
+    ></script>
     <link
       href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
       rel="stylesheet"
@@ -16,23 +20,21 @@
     </header>
     <main id="main">
       <div class="photograph-header"></div>
-      <div class="medias-container"></div>
-    </main>
-    <!-- <div id="contact_modal">
-      <div class="modal">
-        <header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
-        </header>
-        <form>
-          <div>
-            <label>Prénom</label>
-            <input />
-          </div>
-          <button class="contact_button">Envoyer</button>
-        </form>
+      <div class="flex items-center mt-16 gap-16">
+        <p class="font-bold">Trier par</p>
+
+        <div class="bg-primary rounded-md py-2 px-4">
+          <select id="order-select" class="bg-primary text-white">
+            <option value="likes">Popularité</option>
+            <option value="date">Date</option>
+            <option value="title">Titre</option>
+          </select>
+        </div>
       </div>
-    </div>-->
+      <div
+        class="medias-container flex flex-wrap mt-16 gap-16 justify-between"
+      ></div>
+    </main>
     <script src="src/factories/photographer.js"></script>
     <script src="src/factories/medias.js"></script>
     <script src="src/pages/photographer.js"></script>
