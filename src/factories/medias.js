@@ -1,26 +1,25 @@
 function mediasFactory(data) {
-  function getMediaCard({ title, image, likes }) {
-    const picture = `src/assets/medias/${image}`;
+  function getMediaCard({ id, title, image, likes }) {
+    const picture = `src/assets/medias/${image ? image : 'play.png'}`;
 
-    const html = `<div class="w-3/12 flex flex-col">
+    const html = `<button id="${id}" class="media-card w-3/12 flex flex-col" >
       <div class="aspect-square rounded-lg overflow-hidden">
         <img src="${picture}" alt=${title} class="w-full h-full object-cover" />
       </div>
-      <div class="flex justify-between items-center">
-        <p class="text-2xl text-primary">${title}</p>
-        <div class="flex items-center">
+      <div class="flex justify-between items-center w-full">
+        <p class="text-2xl text-primary truncate w-8/12">${title}</p>
+        <div class="flex items-center gap-2">
           <p class="text-2xl font-bold text-primary">${likes}</p>
           <i class="fa-solid fa-heart fa-xl text-primary"></i>
         </div>
       </div>
-    </div>`;
+    </button>`;
 
     return html;
   }
 
   function getMediaList(sort) {
     let html = ``;
-    console.log(sort);
     const medias = data.sort((a, b) => {
       switch (sort) {
         case 'date':
@@ -32,7 +31,6 @@ function mediasFactory(data) {
       }
     });
 
-    console.log(medias);
     medias.forEach((media) => {
       html += getMediaCard(media);
     });
@@ -40,5 +38,33 @@ function mediasFactory(data) {
     return html;
   }
 
-  return { getMediaList };
+  function getMediaModal(medias, mediaId) {
+    const choosenMedia = medias.filter((media) => {
+      return media.id == mediaId;
+    })[0];
+    const media = choosenMedia.image
+      ? `<img src="src/assets/medias/${choosenMedia.image}" alt="${choosenMedia.title}" class="w-full h-full object-cover" />`
+      : `<video controls class="w-full h-full object-cover"><source src="src/assets/medias/${choosenMedia.video}" type="video/mp4" /></video>`;
+
+    const html = `<div class="flex bg-white h-5/6 w-10/12 shadow-sm rounded-lg">
+        <div class="w-2/12 flex items-center justify-center text-primary text-4xl">
+          <button id="previousButton"><</button>
+        </div>
+        <div class="w-8/12 flex flex-col justify-center">
+          <div class="h-5/6 overflow-hidden">
+            ${media}
+          </div>
+          <p class="text-primary text-xl text-left">${choosenMedia.title}</p>
+        </div>
+        <div class="w-2/12 flex flex-col items-center justify-between text-primary text-4xl">
+          <button id="closeButton">x</button>
+          <button id="nextButton">></button>
+          <div />
+        </div>
+      </div>`;
+
+    return html;
+  }
+
+  return { getMediaList, getMediaModal };
 }

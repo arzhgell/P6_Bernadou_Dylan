@@ -23,6 +23,40 @@ async function getData(id) {
   return { choosedPhotographer, choosedMedias };
 }
 
+async function showModal(medias, mediaId) {
+  const body = document.getElementsByTagName('body')[0];
+  const mediasModel = mediasFactory(medias);
+
+  const modal = document.getElementById('modal');
+  modal.classList.remove('hidden');
+  body.classList.add('overflow-y-hidden');
+
+  modal.innerHTML = mediasModel.getMediaModal(medias, mediaId);
+
+  const closeButton = document.getElementById('closeButton');
+
+  closeButton.onclick = () => {
+    modal.classList.add('hidden');
+    body.classList.remove('overflow-y-hidden');
+  };
+
+  const currentIndex = medias.findIndex((media) => media.id == mediaId);
+
+  const nextButton = document.getElementById('nextButton');
+  nextButton.onclick = () => {
+    if (currentIndex + 1 < medias.length) {
+      showModal(medias, medias[currentIndex + 1].id);
+    }
+  };
+
+  const previousButton = document.getElementById('previousButton');
+  previousButton.onclick = () => {
+    if (currentIndex - 1 >= 0) {
+      showModal(medias, medias[currentIndex - 1].id);
+    }
+  };
+}
+
 async function displayData(photographer, medias) {
   const photographHeaderSection = document.querySelector('.photograph-header');
 
@@ -35,10 +69,14 @@ async function displayData(photographer, medias) {
 
   const orderSelect = document.getElementById('order-select');
 
-  console.log(orderSelect.value);
   const mediasList = mediasModel.getMediaList(orderSelect.value);
 
   mediasContainer.innerHTML = mediasList;
+
+  const mediaCards = document.querySelectorAll('.media-card');
+  mediaCards.forEach((mediaCard) => {
+    mediaCard.onclick = () => showModal(medias, mediaCard.id);
+  });
 }
 
 async function init() {
