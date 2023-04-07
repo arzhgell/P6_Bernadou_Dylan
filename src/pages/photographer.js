@@ -59,7 +59,6 @@ async function showModal(medias, mediaId) {
 
 async function displayData(photographer, medias) {
   const photographHeaderSection = document.querySelector('.photograph-header');
-
   const photographerModel = photographerFactory(photographer);
   const photographHeader = photographerModel.getPhotographHeader();
   photographHeaderSection.innerHTML = photographHeader;
@@ -77,6 +76,13 @@ async function displayData(photographer, medias) {
   mediaCards.forEach((mediaCard) => {
     mediaCard.onclick = () => showModal(medias, mediaCard.id);
   });
+
+  const contactButton = document.getElementById('contact-button');
+  const contactModal = document.getElementById('contact-modal');
+
+  contactButton.onclick = () => {
+    contactModal.classList.remove('hidden');
+  };
 }
 
 async function init() {
@@ -85,7 +91,7 @@ async function init() {
   const id = urlParams.get('id');
 
   const { choosedPhotographer, choosedMedias } = await getData(id);
-
+  console.log(choosedPhotographer);
   displayData(choosedPhotographer, choosedMedias);
 }
 
@@ -99,3 +105,15 @@ document.addEventListener(
   },
   false
 );
+
+document
+  .getElementById('contact-form')
+  .addEventListener('submit', function (e) {
+    e.preventDefault();
+    console.log(
+      document.getElementById('firstname').value,
+      document.getElementById('lastname').value,
+      document.getElementById('email').value,
+      document.getElementById('message').value
+    );
+  });

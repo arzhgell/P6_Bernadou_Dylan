@@ -28,7 +28,7 @@ function photographerFactory(data) {
           </p>
           <p class="text-xl text-darkGray">${tagline}</p>
         </div>
-        <button class="bg-primary rounded-md text-white px-3 py-5">Contactez-moi</button>
+        <button id="contact-button" class="bg-primary rounded-md text-white px-3 py-5">Contactez-moi</button>
         <div class="overflow-hidden rounded-full aspect-square w-56 shadow-lg">
           <img
             src="${picture}"
