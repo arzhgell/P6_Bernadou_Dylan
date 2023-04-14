@@ -23,29 +23,39 @@
       <div class="flex mt-16 gap-16">
         <p class="font-bold">Trier par</p>
 
-        <div
-          role="listbox"
-          tabindex="0"
-          id="listbox1"
-          aria-labelledby="listbox1label"
-          onclick="return listItemClick(event);"
-          onkeydown="return listItemClick(event);"
-          onkeypress="return listItemClick(event);"
-          aria-activedescendant="listbox1-1"
-          class="bg-primary rounded-md px-4 py-2 text-white cursor-pointer font-bold"
-        >
-          <div
-            role="option"
-            id="listbox1-1"
-            class="selected p-4"
-            aria-selected="true"
+        <div class="relative">
+          <button
+            id="select-button"
+            class="bg-primary rounded-md px-4 py-2 text-white cursor-pointer font-bold absolute flex items-center"
+            onclick="return showList();"
           >
-            Popularité
+            <span id="select-value">Popularité</span
+            ><i class="fa-solid fa-chevron-down ml-2"></i>
+          </button>
+          <div
+            role="listbox"
+            tabindex="0"
+            id="listbox1"
+            aria-labelledby="listbox1label"
+            onclick="return listItemClick(event);"
+            onkeydown="return listItemKeydown(event);"
+            onkeypress="return listItemKeydown(event);"
+            aria-activedescendant="listbox1-1"
+            class="bg-primary rounded-md px-4 py-2 text-white cursor-pointer font-bold hidden absolute"
+          >
+            <button
+              role="option"
+              id="listbox1-1"
+              class="p-2"
+              aria-selected="true"
+            >
+              Popularité
+            </button>
+            <hr />
+            <button role="option" id="listbox1-2" class="p-4">Date</button>
+            <hr />
+            <button role="option" id="listbox1-3" class="p-4">Titre</button>
           </div>
-          <hr />
-          <div role="option" id="listbox1-2" class="p-4">Date</div>
-          <hr />
-          <div role="option" id="listbox1-3" class="p-4">Titre</div>
         </div>
       </div>
       <div
@@ -99,8 +109,10 @@
     <div
       class="bg-tertiary rounded-t-md flex justify-between w-[25vw] fixed z-10 bottom-0 right-5 py-4 px-8"
     >
-      <p>297 071 <i class="fa-solid fa-heart fa-xl"></i></p>
-      <p>300$ / jour</p>
+      <p>
+        <span id="likes">297 071</span> <i class="fa-solid fa-heart fa-xl"></i>
+      </p>
+      <p id="price">300$ / jour</p>
     </div>
     <script src="src/factories/photographer.js"></script>
     <script src="src/factories/medias.js"></script>

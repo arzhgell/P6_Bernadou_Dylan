@@ -66,7 +66,6 @@ async function displayData(photographer, medias, order) {
   const mediasContainer = document.querySelector('.medias-container');
   const mediasModel = mediasFactory(medias);
 
-  console.log(order);
   const mediasList = mediasModel.getMediaList(order);
 
   mediasContainer.innerHTML = mediasList;
@@ -75,6 +74,11 @@ async function displayData(photographer, medias, order) {
   mediaCards.forEach((mediaCard) => {
     mediaCard.onclick = () => showModal(medias, mediaCard.id);
   });
+
+  const likes = document.getElementById('likes');
+  likes.innerHTML = medias.reduce((partialSum, a) => partialSum + a.likes, 0);
+  const price = document.getElementById('price');
+  price.innerHTML = `${photographer.price}€ / jour`;
 
   const contactButton = document.getElementById('contact-button');
   const contactModal = document.getElementById('contact-modal');
@@ -95,13 +99,48 @@ async function init(order = 'likes') {
 
 async function listItemClick(e) {
   let selectedOptionName = e.target.innerText;
+  const selectValue = document.getElementById('select-value');
+
   if (selectedOptionName === 'Popularité') {
+    selectValue.innerHTML = selectedOptionName;
     init('likes');
   } else if (selectedOptionName === 'Date') {
+    selectValue.innerHTML = selectedOptionName;
     init('date');
-  } else {
+  } else if (selectedOptionName === 'Titre') {
+    selectValue.innerHTML = selectedOptionName;
     init('title');
   }
+  const selectButton = document.getElementById('select-button');
+  selectButton.classList.remove('hidden');
+  const list = document.getElementById('listbox1');
+  list.classList.add('hidden');
+}
+
+async function listItemKeydown(e) {
+  const selectValue = document.getElementById('select-value');
+
+  if (e.key === '1') {
+    selectValue.innerHTML = 'Popularité';
+    init('likes');
+  } else if (e.key === '2') {
+    selectValue.innerHTML = 'Date';
+    init('date');
+  } else if (e.key === '3') {
+    selectValue.innerHTML = 'Titre';
+    init('title');
+  }
+  const selectButton = document.getElementById('select-button');
+  selectButton.classList.remove('hidden');
+  const list = document.getElementById('listbox1');
+  list.classList.add('hidden');
+}
+
+function showList() {
+  const selectButton = document.getElementById('select-button');
+  selectButton.classList.add('hidden');
+  const list = document.getElementById('listbox1');
+  list.classList.remove('hidden');
 }
 
 init();
