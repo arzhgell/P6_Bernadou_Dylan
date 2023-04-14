@@ -57,7 +57,7 @@ async function showModal(medias, mediaId) {
   };
 }
 
-async function displayData(photographer, medias) {
+async function displayData(photographer, medias, order) {
   const photographHeaderSection = document.querySelector('.photograph-header');
   const photographerModel = photographerFactory(photographer);
   const photographHeader = photographerModel.getPhotographHeader();
@@ -66,9 +66,8 @@ async function displayData(photographer, medias) {
   const mediasContainer = document.querySelector('.medias-container');
   const mediasModel = mediasFactory(medias);
 
-  const orderSelect = document.getElementById('order-select');
-
-  const mediasList = mediasModel.getMediaList(orderSelect.value);
+  console.log(order);
+  const mediasList = mediasModel.getMediaList(order);
 
   mediasContainer.innerHTML = mediasList;
 
@@ -85,26 +84,27 @@ async function displayData(photographer, medias) {
   };
 }
 
-async function init() {
+async function init(order = 'likes') {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const id = urlParams.get('id');
 
   const { choosedPhotographer, choosedMedias } = await getData(id);
-  console.log(choosedPhotographer);
-  displayData(choosedPhotographer, choosedMedias);
+  displayData(choosedPhotographer, choosedMedias, order);
+}
+
+async function listItemClick(e) {
+  let selectedOptionName = e.target.innerText;
+  if (selectedOptionName === 'Popularité') {
+    init('likes');
+  } else if (selectedOptionName === 'Date') {
+    init('date');
+  } else {
+    init('title');
+  }
 }
 
 init();
-
-document.addEventListener(
-  'input',
-  function (event) {
-    if (event.target.id !== 'order-select') return;
-    init();
-  },
-  false
-);
 
 document
   .getElementById('contact-form')

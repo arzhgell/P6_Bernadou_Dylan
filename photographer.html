@@ -20,15 +20,32 @@
     </header>
     <main id="main">
       <div class="photograph-header"></div>
-      <div class="flex items-center mt-16 gap-16">
+      <div class="flex mt-16 gap-16">
         <p class="font-bold">Trier par</p>
 
-        <div class="bg-primary rounded-md py-2 px-4">
-          <select id="order-select" class="bg-primary text-white">
-            <option value="likes">Popularité</option>
-            <option value="date">Date</option>
-            <option value="title">Titre</option>
-          </select>
+        <div
+          role="listbox"
+          tabindex="0"
+          id="listbox1"
+          aria-labelledby="listbox1label"
+          onclick="return listItemClick(event);"
+          onkeydown="return listItemClick(event);"
+          onkeypress="return listItemClick(event);"
+          aria-activedescendant="listbox1-1"
+          class="bg-primary rounded-md px-4 py-2 text-white cursor-pointer font-bold"
+        >
+          <div
+            role="option"
+            id="listbox1-1"
+            class="selected p-4"
+            aria-selected="true"
+          >
+            Popularité
+          </div>
+          <hr />
+          <div role="option" id="listbox1-2" class="p-4">Date</div>
+          <hr />
+          <div role="option" id="listbox1-3" class="p-4">Titre</div>
         </div>
       </div>
       <div
@@ -79,6 +96,12 @@
         </button>
       </form>
     </section>
+    <div
+      class="bg-tertiary rounded-t-md flex justify-between w-[25vw] fixed z-10 bottom-0 right-5 py-4 px-8"
+    >
+      <p>297 071 <i class="fa-solid fa-heart fa-xl"></i></p>
+      <p>300$ / jour</p>
+    </div>
     <script src="src/factories/photographer.js"></script>
     <script src="src/factories/medias.js"></script>
     <script src="src/pages/photographer.js"></script>
