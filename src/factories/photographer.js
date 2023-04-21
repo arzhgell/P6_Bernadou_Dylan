@@ -4,7 +4,7 @@ function photographerFactory(data) {
   const picture = `src/assets/photographers/${portrait}`;
 
   function getUserCardDOM() {
-    const html = `<a href="/photographer.html?id=${id}" class="w-3/12">
+    const html = `<a href="/photographer.html?id=${id}" class="w-full lg:w-3/12">
       <article class="flex flex-col items-center">
         <div class="overflow-hidden rounded-full aspect-square w-56  shadow-md">
           <img src="${picture}" alt="${name}" class="object-cover h-full w-full" />
@@ -20,7 +20,7 @@ function photographerFactory(data) {
   }
 
   function getPhotographHeader() {
-    const html = `<div class="flex justify-between items-center mt-16 px-12 py-16 rounded-md bg-lightGray">
+    const html = `<div class="flex flex-col lg:flex-row justify-between items-center mt-16 px-12 py-16 rounded-md bg-lightGray gap-4">
         <div class="flex flex-col gap-4">
           <h1 class="text-secondary text-4xl">${name}</h1>
           <p class="text-primary text-2xl">

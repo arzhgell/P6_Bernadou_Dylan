@@ -2,7 +2,7 @@ function mediasFactory(data) {
   function getMediaCard({ id, title, image, likes }) {
     const picture = `src/assets/medias/${image ? image : 'play.png'}`;
 
-    const html = `<button id="${id}" class="media-card w-3/12 flex flex-col" >
+    const html = `<button id="${id}" class="media-card w-full lg:w-3/12 flex flex-col" >
       <div class="aspect-square rounded-lg overflow-hidden">
         <img src="${picture}" alt=${title} class="w-full h-full object-cover" />
       </div>
@@ -46,8 +46,11 @@ function mediasFactory(data) {
       ? `<img src="src/assets/medias/${choosenMedia.image}" alt="${choosenMedia.title}" class="w-full h-full object-cover" />`
       : `<video controls class="w-full h-full object-cover"><source src="src/assets/medias/${choosenMedia.video}" type="video/mp4" /></video>`;
 
-    const html = `<div class="flex bg-white h-5/6 w-10/12 shadow-sm rounded-lg">
-        <div class="w-2/12 flex items-center justify-center text-primary text-4xl">
+    const html = `
+    <div class="flex flex-col bg-white h-5/6 w-full lg:w-10/12 shadow-sm rounded-lg items-end">
+      <button id="closeButton" class="text-primary relative right-5 text-3xl">X</button>
+      <div class="flex h-full w-full">
+        <div class="w-2/12 flex flex-col items-center justify-center text-primary text-4xl">
           <button id="previousButton"><</button>
         </div>
         <div class="w-8/12 flex flex-col justify-center">
@@ -56,12 +59,11 @@ function mediasFactory(data) {
           </div>
           <p class="text-primary text-xl text-left">${choosenMedia.title}</p>
         </div>
-        <div class="w-2/12 flex flex-col items-center justify-between text-primary text-4xl">
-          <button id="closeButton">x</button>
+        <div class="w-2/12 flex flex-col items-center justify-center text-primary text-4xl">
           <button id="nextButton">></button>
-          <div />
         </div>
-      </div>`;
+      </div>
+    </div>`;
 
     return html;
   }

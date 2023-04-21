@@ -3,6 +3,7 @@
   <head>
     <link href="src/assets/css/output.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
     <script
       src="https://kit.fontawesome.com/ae0defa13c.js"
@@ -14,9 +15,11 @@
     />
     <title>Fisheye - photographe</title>
   </head>
-  <body class="px-24 py-12">
+  <body class="px-4 lg:px-24 py-12">
     <header class="flex justify-between items-center">
-      <a href="/" class="w-2/12"><img src="src/assets/images/logo.png" /></a>
+      <a href="/" class="w-full lg:w-2/12"
+        ><img src="src/assets/images/logo.png"
+      /></a>
     </header>
     <main id="main">
       <div class="photograph-header"></div>
@@ -72,7 +75,7 @@
     >
       <form
         id="contact-form"
-        class="bg-tertiary w-5/12 flex flex-col px-9 py-4 gap-2 shadow-md rounded-sm"
+        class="bg-tertiary w-full lg:w-5/12 flex flex-col px-9 py-4 gap-2 shadow-md rounded-sm"
       >
         <div class="flex justify-between items-start">
           <div class="flex flex-col">
@@ -101,13 +104,15 @@
             class="rounded-sm h-[25vh]"
           ></textarea>
         </div>
-        <button class="rounded-md bg-primary text-white w-3/12 px-4 py-3">
+        <button
+          class="rounded-md bg-primary text-white w-full lg:w-3/12 px-4 py-3"
+        >
           Envoyer
         </button>
       </form>
     </section>
     <div
-      class="bg-tertiary rounded-t-md flex justify-between w-[25vw] fixed z-10 bottom-0 right-5 py-4 px-8"
+      class="bg-tertiary rounded-t-md flex justify-between w-[75vw] lg:w-[25vw] fixed z-10 bottom-0 right-5 py-4 px-8"
     >
       <p>
         <span id="likes">297 071</span> <i class="fa-solid fa-heart fa-xl"></i>
