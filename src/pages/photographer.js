@@ -143,6 +143,10 @@ function showList() {
   list.classList.remove('hidden');
 }
 
+function hideContactFrom() {
+  const contactModal = document.getElementById('contact-modal');
+  contactModal.classList.add('hidden');
+}
 init();
 
 document
@@ -156,3 +160,12 @@ document
       document.getElementById('message').value
     );
   });
+
+function like(cardId) {
+  const card = document.getElementById(cardId);
+  // Je recupere le nom de like de la carte
+  // j'incremente
+  // je replace
+  // je remplace l'icone
+  // disabled le button
+}
