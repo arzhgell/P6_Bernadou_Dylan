@@ -2,18 +2,18 @@ function mediasFactory(data) {
   function getMediaCard({ id, title, image, likes }) {
     const picture = `src/assets/medias/${image ?? 'play.png'}`;
 
-    const html = `<button id="${id}" class="media-card w-full lg:w-3/12 flex flex-col" >
-      <div class="aspect-square rounded-lg overflow-hidden">
+    const html = `<div  class="media-card w-full lg:w-3/12 flex flex-col">
+      <button id="${id}" class="media-illustration aspect-square rounded-lg overflow-hidden">
         <img src="${picture}" alt=${title} class="w-full h-full object-cover" />
-      </div>
+      </button>
       <div class="flex justify-between items-center w-full">
         <p class="text-2xl text-primary truncate text-left w-8/12">${title}</p>
-        <button class="flex items-center gap-2" onClick="like(${id})">
+        <button id="like-${id}" class="flex items-center gap-2" onClick="like(${id})">
           <p class="text-2xl font-bold text-primary">${likes}</p>
           <i class="fa-regular fa-heart fa-xl text-primary"></i>
         </button>
       </div>
-    </button>`;
+    </div>`;
 
     return html;
   }
@@ -39,7 +39,9 @@ function mediasFactory(data) {
   }
 
   function getMediaModal(medias, mediaId) {
-    const choosenMedia = medias.filter((media) => media.id === mediaId)[0];
+    const choosenMedia = medias.find((media) => {
+      return Number(media.id) === Number(mediaId);
+    });
     const media = choosenMedia.image
       ? `<img src="src/assets/medias/${choosenMedia.image}" alt="${choosenMedia.title}" class="w-full h-full object-cover" />`
       : `<video controls class="w-full h-full object-cover"><source src="src/assets/medias/${choosenMedia.video}" type="video/mp4" /></video>`;

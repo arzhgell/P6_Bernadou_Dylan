@@ -70,7 +70,7 @@ async function displayData(photographer, medias, order) {
 
   mediasContainer.innerHTML = mediasList;
 
-  const mediaCards = document.querySelectorAll('.media-card');
+  const mediaCards = document.querySelectorAll('.media-illustration');
   mediaCards.forEach((mediaCard) => {
     mediaCard.onclick = () => showModal(medias, mediaCard.id);
   });
@@ -153,19 +153,21 @@ document
   .getElementById('contact-form')
   .addEventListener('submit', function (e) {
     e.preventDefault();
-    console.log(
-      document.getElementById('firstname').value,
-      document.getElementById('lastname').value,
-      document.getElementById('email').value,
-      document.getElementById('message').value
-    );
   });
 
 function like(cardId) {
-  const card = document.getElementById(cardId);
-  // Je recupere le nom de like de la carte
-  // j'incremente
-  // je replace
-  // je remplace l'icone
-  // disabled le button
+  const card = document.getElementById(`like-${cardId}`);
+  let icon = card.getElementsByClassName('fa-regular')[0];
+  let likesCount = card.getElementsByTagName('p')[0];
+
+  if (icon) {
+    icon.classList.remove('fa-regular');
+    icon.classList.add('fa-solid');
+    likesCount.innerHTML = parseInt(likesCount.innerHTML) + 1;
+  } else {
+    let icon = card.getElementsByClassName('fa-solid')[0];
+    icon.classList.remove('fa-solid');
+    icon.classList.add('fa-regular');
+    likesCount.innerHTML = parseInt(likesCount.innerHTML) - 1;
+  }
 }
