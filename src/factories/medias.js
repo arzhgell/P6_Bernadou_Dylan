@@ -10,7 +10,7 @@ function mediasFactory(data) {
         <p class="text-2xl text-primary truncate text-left w-8/12">${title}</p>
         <button id="like-${id}" class="flex items-center gap-2" onClick="like(${id})">
           <p class="text-2xl font-bold text-primary">${likes}</p>
-          <i class="fa-regular fa-heart fa-xl text-primary"></i>
+          <em class="fa-regular fa-heart fa-xl text-primary"></em>
         </button>
       </div>
     </div>`;
@@ -39,9 +39,9 @@ function mediasFactory(data) {
   }
 
   function getMediaModal(medias, mediaId) {
-    const choosenMedia = medias.find((media) => {
-      return Number(media.id) === Number(mediaId);
-    });
+    const choosenMedia = medias.find(
+      (media) => Number(media.id) === Number(mediaId)
+    );
     const media = choosenMedia.image
       ? `<img src="src/assets/medias/${choosenMedia.image}" alt="${choosenMedia.title}" class="w-full h-full object-cover" />`
       : `<video controls class="w-full h-full object-cover"><source src="src/assets/medias/${choosenMedia.video}" type="video/mp4" /></video>`;
