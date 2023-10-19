@@ -26,17 +26,21 @@ async function getData(id) {
 async function showModal(medias, mediaId) {
   const body = document.getElementsByTagName('body')[0];
   const mediasModel = mediasFactory(medias);
+  const main = document.getElementsByTagName('main')[0];
 
   const modal = document.getElementById('modal');
   modal.classList.remove('hidden');
+  modal.setAttribute('aria-modal', 'true');
   body.classList.add('overflow-y-hidden');
-
+  main.setAttribute('aria-hidden', 'true');
   modal.innerHTML = mediasModel.getMediaModal(medias, mediaId);
 
   const closeButton = document.getElementById('closeButton');
 
   closeButton.onclick = () => {
     modal.classList.add('hidden');
+    modal.setAttribute('aria-modal', 'false');
+    main.removeAttribute('aria-hidden');
     body.classList.remove('overflow-y-hidden');
   };
 
@@ -85,6 +89,13 @@ async function displayData(photographer, medias, order) {
 
   contactButton.onclick = () => {
     contactModal.classList.remove('hidden');
+
+    const main = document.getElementsByTagName('main')[0];
+    main.setAttribute('aria-hidden', 'true');
+    contactModal.setAttribute('aria-modal', 'true');
+
+    const firstname = document.getElementById('firstname');
+    firstname.focus();
   };
 }
 
@@ -146,6 +157,14 @@ function showList() {
 function hideContactFrom() {
   const contactModal = document.getElementById('contact-modal');
   contactModal.classList.add('hidden');
+
+  const main = document.getElementsByTagName('main')[0];
+  main.removeAttribute('aria-hidden');
+
+  contactModal.setAttribute('aria-modal', 'false ');
+
+  const contactForm = document.getElementById('contact-form');
+  contactForm.reset();
 }
 init();
 
