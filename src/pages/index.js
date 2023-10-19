@@ -1,8 +1,10 @@
+// tool function for load JSON content
 async function loadJSON(url) {
   const res = await fetch(url);
   return res.json();
 }
 
+// retrieve photographer data from json file
 async function getPhotographers() {
   let photographers = [];
 
@@ -13,6 +15,7 @@ async function getPhotographers() {
   return photographers;
 }
 
+// display photographer data fetch in json as card in div .photographer_section
 async function displayData(photographers) {
   const photographersSection = document.querySelector('.photographer_section');
 
@@ -25,7 +28,6 @@ async function displayData(photographers) {
 }
 
 async function init() {
-  // Récupère les datas des photographes
   const photographers = await getPhotographers();
 
   displayData(photographers);

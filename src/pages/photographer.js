@@ -1,28 +1,8 @@
-async function loadJSON(url) {
-  const res = await fetch(url);
-  return res.json();
-}
+document
+  .getElementById('contact-form')
+  .addEventListener('submit', (e) => e.preventDefault());
 
-async function getData(id) {
-  let photographers = [];
-  let medias = [];
-
-  await loadJSON('src/assets/data/photographers.json').then((response) => {
-    photographers = response.photographers;
-    medias = response.media;
-  });
-
-  const choosedPhotographer = photographers.filter(
-    (photographer) => photographer.id === parseInt(id, 10)
-  )[0];
-
-  const choosedMedias = medias.filter(
-    (media) => media.photographerId === parseInt(id, 10)
-  );
-
-  return { choosedPhotographer, choosedMedias };
-}
-
+// allow to media modal
 async function showModal(medias, mediaId) {
   const body = document.getElementsByTagName('body')[0];
   const mediasModel = mediasFactory(medias);
@@ -44,7 +24,9 @@ async function showModal(medias, mediaId) {
     body.classList.remove('overflow-y-hidden');
   };
 
-  const currentIndex = medias.findIndex((media) => media.id == mediaId);
+  const currentIndex = medias.findIndex(
+    (media) => Number(media.id) === Number(mediaId)
+  );
 
   const nextButton = document.getElementById('nextButton');
   nextButton.onclick = () => {
@@ -61,6 +43,47 @@ async function showModal(medias, mediaId) {
   };
 }
 
+// display order's select options
+function showList() {
+  const selectButton = document.getElementById('select-button');
+  selectButton.classList.add('hidden');
+  const list = document.getElementById('listbox1');
+  list.classList.remove('hidden');
+}
+
+// close the contact modal
+function hideContactFrom() {
+  const contactModal = document.getElementById('contact-modal');
+  contactModal.classList.add('hidden');
+
+  const main = document.getElementsByTagName('main')[0];
+  main.removeAttribute('aria-hidden');
+
+  contactModal.setAttribute('aria-modal', 'false ');
+
+  const contactForm = document.getElementById('contact-form');
+  contactForm.reset();
+}
+
+// allow to like or unlike a media
+function like(cardId) {
+  const card = document.getElementById(`like-${cardId}`);
+  const regularIcon = card.getElementsByClassName('fa-regular')[0];
+  const likesCount = card.getElementsByTagName('p')[0];
+
+  if (regularIcon) {
+    regularIcon.classList.remove('fa-regular');
+    regularIcon.classList.add('fa-solid');
+    likesCount.innerHTML = Number(likesCount.innerHTML) + 1;
+  } else {
+    const solidIcon = card.getElementsByClassName('fa-solid')[0];
+    solidIcon.classList.remove('fa-solid');
+    solidIcon.classList.add('fa-regular');
+    likesCount.innerHTML = Number(likesCount.innerHTML) - 1;
+  }
+}
+
+// displaying data using factory
 async function displayData(photographer, medias, order) {
   const photographHeaderSection = document.querySelector('.photograph-header');
   const photographerModel = photographerFactory(photographer);
@@ -99,6 +122,32 @@ async function displayData(photographer, medias, order) {
   };
 }
 
+async function loadJSON(url) {
+  const res = await fetch(url);
+  return res.json();
+}
+
+// Retrieve data from json
+async function getData(id) {
+  let photographers = [];
+  let medias = [];
+
+  await loadJSON('src/assets/data/photographers.json').then((response) => {
+    photographers = response.photographers;
+    medias = response.media;
+  });
+
+  const choosedPhotographer = photographers.filter(
+    (photographer) => photographer.id === parseInt(id, 10)
+  )[0];
+
+  const choosedMedias = medias.filter(
+    (media) => media.photographerId === parseInt(id, 10)
+  );
+
+  return { choosedPhotographer, choosedMedias };
+}
+
 async function init(order = 'likes') {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
@@ -108,8 +157,11 @@ async function init(order = 'likes') {
   displayData(choosedPhotographer, choosedMedias, order);
 }
 
+init();
+
+// allow to choose option of order's select with mouse
 async function listItemClick(e) {
-  let selectedOptionName = e.target.innerText;
+  const selectedOptionName = e.target.innerText;
   const selectValue = document.getElementById('select-value');
 
   if (selectedOptionName === 'Popularité') {
@@ -128,6 +180,7 @@ async function listItemClick(e) {
   list.classList.add('hidden');
 }
 
+// allow to choose option of order's select with keyboard
 async function listItemKeydown(e) {
   const selectValue = document.getElementById('select-value');
 
@@ -145,48 +198,4 @@ async function listItemKeydown(e) {
   selectButton.classList.remove('hidden');
   const list = document.getElementById('listbox1');
   list.classList.add('hidden');
-}
-
-function showList() {
-  const selectButton = document.getElementById('select-button');
-  selectButton.classList.add('hidden');
-  const list = document.getElementById('listbox1');
-  list.classList.remove('hidden');
-}
-
-function hideContactFrom() {
-  const contactModal = document.getElementById('contact-modal');
-  contactModal.classList.add('hidden');
-
-  const main = document.getElementsByTagName('main')[0];
-  main.removeAttribute('aria-hidden');
-
-  contactModal.setAttribute('aria-modal', 'false ');
-
-  const contactForm = document.getElementById('contact-form');
-  contactForm.reset();
-}
-init();
-
-document
-  .getElementById('contact-form')
-  .addEventListener('submit', function (e) {
-    e.preventDefault();
-  });
-
-function like(cardId) {
-  const card = document.getElementById(`like-${cardId}`);
-  let icon = card.getElementsByClassName('fa-regular')[0];
-  let likesCount = card.getElementsByTagName('p')[0];
-
-  if (icon) {
-    icon.classList.remove('fa-regular');
-    icon.classList.add('fa-solid');
-    likesCount.innerHTML = parseInt(likesCount.innerHTML) + 1;
-  } else {
-    let icon = card.getElementsByClassName('fa-solid')[0];
-    icon.classList.remove('fa-solid');
-    icon.classList.add('fa-regular');
-    likesCount.innerHTML = parseInt(likesCount.innerHTML) - 1;
-  }
 }
