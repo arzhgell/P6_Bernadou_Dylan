@@ -1,21 +1,40 @@
 function mediasFactory(data) {
   function getMediaCard({ id, title, image, likes, video }) {
-    const media = image
-      ? `<img src="src/assets/medias/${image}" alt="${title}" class="w-full h-full object-cover" />`
-      : `<video  class="w-full h-full object-cover"><source src="src/assets/medias/${video}" type="video/mp4" /></video>`;
+    let media;
+
+    if (image) {
+      const img = document.createElement('img');
+      img.setAttribute('src', `src/assets/medias/${image}`);
+      img.setAttribute('alt', title);
+      img.classList.add('w-full', 'h-full', 'object-cover');
+      media = img;
+    } else {
+      const source = document.createElement('source');
+      source.setAttribute('src', `src/assets/medias/${video}`);
+      source.setAttribute('type', 'video/mp4');
+
+      const video = document.createElement('video');
+      video.setAttribute('controls', '');
+      video.classList.add('w-full', 'h-full', 'object-cover');
+      video.appendChild(source);
+      media = video;
+    }
 
     const html = document.createElement('div');
     html.classList.add('media-card', 'w-full', 'lg:w-3/12', 'flex', 'flex-col');
     html.innerHTML = `
       <button id="illustration-${id}" class="media-illustration aspect-square rounded-lg overflow-hidden"></button>
       <div class="flex justify-between items-center w-full">
-        <p class="text-2xl text-primary truncate text-left w-8/12">${title}</p>
-        <button id="like-${id}" class="flex items-center gap-2" onClick="like(${id})">
-          <p class="text-2xl font-bold text-primary">${likes}</p>
+        <p id="title-${id}" class="text-2xl text-primary truncate text-left w-8/12"></p>
+        <button id="like-${id}" class="flex items-center gap-2">
+          <p id="likescount-${id}" class="text-2xl font-bold text-primary"></p>
           <em class="fa-regular fa-heart fa-xl text-primary"></em>
         </button>
       </div>`;
     html.querySelector(`#illustration-${id}`).innerHTML = media;
+    html.querySelector(`#title-${id}`).textContent = title;
+    html.querySelector(`#likescount-${id}`).textContent = likes;
+    html.querySelector(`#like-${id}`).setAttribute('onClick', like(id));
 
     return html;
   }
@@ -51,9 +70,26 @@ function mediasFactory(data) {
     const choosenMedia = medias.find(
       (media) => Number(media.id) === Number(mediaId),
     );
-    const media = choosenMedia.image
-      ? `<img src="src/assets/medias/${choosenMedia.image}" alt="${choosenMedia.title}" class="w-full h-full object-cover" />`
-      : `<video controls class="w-full h-full object-cover"><source src="src/assets/medias/${choosenMedia.video}" type="video/mp4" /></video>`;
+
+    let media;
+
+    if (choosenMedia.image) {
+      const img = document.createElement('img');
+      img.setAttribute('src', `src/assets/medias/${choosenMedia.image}`);
+      img.setAttribute('alt', choosenMedia.title);
+      img.classList.add('w-full', 'h-full', 'object-cover');
+      media = img;
+    } else {
+      const source = document.createElement('source');
+      source.setAttribute('src', `src/assets/medias/${choosenMedia.video}`);
+      source.setAttribute('type', 'video/mp4');
+
+      const video = document.createElement('video');
+      video.setAttribute('controls', '');
+      video.classList.add('w-full', 'h-full', 'object-cover');
+      video.appendChild(source);
+      media = video;
+    }
 
     const html = document.createElement('div');
     html.classList.add(
