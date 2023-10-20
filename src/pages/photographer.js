@@ -1,28 +1,28 @@
+// Retrieve data from json file
 async function loadJSON(url) {
   const res = await fetch(url);
   return res.json();
 }
 
 async function getData(id) {
-  let photographers = [];
-  let medias = [];
-
-  await loadJSON('src/assets/data/photographers.json').then((response) => {
-    photographers = response.photographers;
-    medias = response.media;
-  });
-
+  const { photographers, media } = await loadJSON(
+    'src/assets/data/photographers.json',
+  );
   const choosedPhotographer = photographers.filter(
-    (photographer) => photographer.id === parseInt(id, 10)
+    (photographer) => photographer.id === Number(id),
   )[0];
 
-  const choosedMedias = medias.filter(
-    (media) => media.photographerId === parseInt(id, 10)
+  const choosedMedias = media.filter(
+    (mediaObject) => mediaObject.photographerId === Number(id),
   );
 
   return { choosedPhotographer, choosedMedias };
 }
+document
+  .getElementById('contact-form')
+  .addEventListener('submit', (e) => e.preventDefault());
 
+// allow to media modal
 async function showModal(medias, mediaId) {
   const body = document.getElementsByTagName('body')[0];
   const mediasModel = mediasFactory(medias);
@@ -33,10 +33,10 @@ async function showModal(medias, mediaId) {
   modal.setAttribute('aria-modal', 'true');
   body.classList.add('overflow-y-hidden');
   main.setAttribute('aria-hidden', 'true');
-  modal.innerHTML = mediasModel.getMediaModal(medias, mediaId);
+  const mediaModal = mediasModel.getMediaModal(medias, mediaId);
+  modal.innerHTML = mediaModal.outerHTML;
 
-  const closeButton = document.getElementById('closeButton');
-
+  const closeButton = document.querySelector('#closeButton');
   closeButton.onclick = () => {
     modal.classList.add('hidden');
     modal.setAttribute('aria-modal', 'false');
@@ -44,12 +44,14 @@ async function showModal(medias, mediaId) {
     body.classList.remove('overflow-y-hidden');
   };
 
-  const currentIndex = medias.findIndex((media) => media.id == mediaId);
+  const currentIndex = medias.findIndex((media) => media.id === mediaId);
 
   const nextButton = document.getElementById('nextButton');
   nextButton.onclick = () => {
     if (currentIndex + 1 < medias.length) {
       showModal(medias, medias[currentIndex + 1].id);
+    } else {
+      showModal(medias, medias[0].id);
     }
   };
 
@@ -57,26 +59,52 @@ async function showModal(medias, mediaId) {
   previousButton.onclick = () => {
     if (currentIndex - 1 >= 0) {
       showModal(medias, medias[currentIndex - 1].id);
+    } else {
+      showModal(medias, medias[medias.length - 1].id);
     }
   };
 }
 
+// display order's select options
+function showList() {
+  const selectButton = document.getElementById('select-button');
+  selectButton.classList.add('hidden');
+  const list = document.getElementById('listbox1');
+  list.classList.remove('hidden');
+}
+
+// close the contact modal
+function hideContactFrom() {
+  const contactModal = document.getElementById('contact-modal');
+  contactModal.classList.add('hidden');
+
+  const main = document.getElementsByTagName('main')[0];
+  main.removeAttribute('aria-hidden');
+
+  contactModal.setAttribute('aria-modal', 'false ');
+
+  const contactForm = document.getElementById('contact-form');
+  contactForm.reset();
+}
+
+// displaying data using factory
 async function displayData(photographer, medias, order) {
   const photographHeaderSection = document.querySelector('.photograph-header');
   const photographerModel = photographerFactory(photographer);
-  const photographHeader = photographerModel.getPhotographHeader();
-  photographHeaderSection.innerHTML = photographHeader;
+  photographHeaderSection.innerHTML =
+    photographerModel.getPhotographHeader().outerHTML;
 
   const mediasContainer = document.querySelector('.medias-container');
   const mediasModel = mediasFactory(medias);
 
   const mediasList = mediasModel.getMediaList(order);
-
-  mediasContainer.innerHTML = mediasList;
+  mediasContainer.innerHTML = mediasList.outerHTML;
 
   const mediaCards = document.querySelectorAll('.media-illustration');
   mediaCards.forEach((mediaCard) => {
-    mediaCard.onclick = () => showModal(medias, mediaCard.id);
+    const mediaCardCopy = mediaCard;
+    mediaCardCopy.onclick = () =>
+      showModal(medias, Number(mediaCard.id.split('-')[1]));
   });
 
   const likes = document.getElementById('likes');
@@ -108,8 +136,9 @@ async function init(order = 'likes') {
   displayData(choosedPhotographer, choosedMedias, order);
 }
 
+// allow to choose option of order's select with mouse
 async function listItemClick(e) {
-  let selectedOptionName = e.target.innerText;
+  const selectedOptionName = e.target.innerText;
   const selectValue = document.getElementById('select-value');
 
   if (selectedOptionName === 'Popularité') {
@@ -128,6 +157,7 @@ async function listItemClick(e) {
   list.classList.add('hidden');
 }
 
+// allow to choose option of order's select with keyboard
 async function listItemKeydown(e) {
   const selectValue = document.getElementById('select-value');
 
@@ -147,46 +177,31 @@ async function listItemKeydown(e) {
   list.classList.add('hidden');
 }
 
-function showList() {
-  const selectButton = document.getElementById('select-button');
-  selectButton.classList.add('hidden');
-  const list = document.getElementById('listbox1');
-  list.classList.remove('hidden');
-}
-
-function hideContactFrom() {
-  const contactModal = document.getElementById('contact-modal');
-  contactModal.classList.add('hidden');
-
-  const main = document.getElementsByTagName('main')[0];
-  main.removeAttribute('aria-hidden');
-
-  contactModal.setAttribute('aria-modal', 'false ');
-
-  const contactForm = document.getElementById('contact-form');
-  contactForm.reset();
-}
 init();
 
-document
-  .getElementById('contact-form')
-  .addEventListener('submit', function (e) {
-    e.preventDefault();
-  });
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+  hideContactFrom();
+  e.preventDefault();
+});
 
+// allow to like or unlike a media
 function like(cardId) {
   const card = document.getElementById(`like-${cardId}`);
-  let icon = card.getElementsByClassName('fa-regular')[0];
-  let likesCount = card.getElementsByTagName('p')[0];
+  const totalLikesCount = document.getElementById(`likes`);
 
-  if (icon) {
-    icon.classList.remove('fa-regular');
-    icon.classList.add('fa-solid');
-    likesCount.innerHTML = parseInt(likesCount.innerHTML) + 1;
+  const regularIcon = card.getElementsByClassName('fa-regular')[0];
+  const likesCount = card.getElementsByTagName('p')[0];
+
+  if (regularIcon) {
+    regularIcon.classList.remove('fa-regular');
+    regularIcon.classList.add('fa-solid');
+    likesCount.innerHTML = Number(likesCount.innerHTML) + 1;
+    totalLikesCount.innerHTML = Number(totalLikesCount.innerHTML) + 1;
   } else {
-    let icon = card.getElementsByClassName('fa-solid')[0];
-    icon.classList.remove('fa-solid');
-    icon.classList.add('fa-regular');
-    likesCount.innerHTML = parseInt(likesCount.innerHTML) - 1;
+    const solidIcon = card.getElementsByClassName('fa-solid')[0];
+    solidIcon.classList.remove('fa-solid');
+    solidIcon.classList.add('fa-regular');
+    likesCount.innerHTML = Number(likesCount.innerHTML) - 1;
+    totalLikesCount.innerHTML = Number(totalLikesCount.innerHTML) - 1;
   }
 }
