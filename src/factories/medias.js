@@ -13,11 +13,10 @@ function mediasFactory(data) {
       source.setAttribute('src', `src/assets/medias/${video}`);
       source.setAttribute('type', 'video/mp4');
 
-      const video = document.createElement('video');
-      video.setAttribute('controls', '');
-      video.classList.add('w-full', 'h-full', 'object-cover');
-      video.appendChild(source);
-      media = video;
+      const videoElement = document.createElement('video');
+      videoElement.classList.add('w-full', 'h-full', 'object-cover');
+      videoElement.appendChild(source);
+      media = videoElement;
     }
 
     const html = document.createElement('div');
@@ -26,15 +25,15 @@ function mediasFactory(data) {
       <button id="illustration-${id}" class="media-illustration aspect-square rounded-lg overflow-hidden"></button>
       <div class="flex justify-between items-center w-full">
         <p id="title-${id}" class="text-2xl text-primary truncate text-left w-8/12"></p>
-        <button id="like-${id}" class="flex items-center gap-2">
+        <button id="like-${id}" class="flex items-center gap-2" onClick="like(${id})">
           <p id="likescount-${id}" class="text-2xl font-bold text-primary"></p>
           <em class="fa-regular fa-heart fa-xl text-primary"></em>
         </button>
       </div>`;
-    html.querySelector(`#illustration-${id}`).innerHTML = media;
+
+    html.querySelector(`#illustration-${id}`).appendChild(media);
     html.querySelector(`#title-${id}`).textContent = title;
     html.querySelector(`#likescount-${id}`).textContent = likes;
-    html.querySelector(`#like-${id}`).setAttribute('onClick', like(id));
 
     return html;
   }
@@ -119,8 +118,9 @@ function mediasFactory(data) {
         </div>
       </div>>`;
 
-    html.querySelector(`#media-${mediaId}`).innerHTML = media;
+    html.querySelector(`#media-${mediaId}`).appendChild(media);
     html.querySelector(`#title-${mediaId}`).textContent = choosenMedia.title;
+
     return html;
   }
 
