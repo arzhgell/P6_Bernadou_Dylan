@@ -17,23 +17,22 @@
   </head>
   <body class="px-4 lg:px-24 py-12">
     <header class="flex justify-between items-center">
-      <a href="/" class="w-full lg:w-2/12"
-        ><img src="src/assets/images/logo.png" alt="logo fisheye"
-      /></a>
+      <a href="/" class="w-full lg:w-2/12">
+        <img src="src/assets/images/logo.png" alt="logo fisheye" />
+      </a>
     </header>
     <main id="main">
       <div class="photograph-header"></div>
       <div class="flex mt-16 gap-16">
         <p class="font-bold">Trier par</p>
-
         <div class="relative">
           <button
             id="select-button"
             class="bg-primary rounded-md px-4 py-2 text-white cursor-pointer font-bold absolute flex items-center"
             onclick="return showList();"
           >
-            <span id="select-value">Popularité</span
-            ><em class="fa-solid fa-chevron-down ml-2"></em>
+            <span id="select-value">Popularité</span>
+            <em class="fa-solid fa-chevron-down ml-2"></em>
           </button>
           <div
             role="listbox"
@@ -81,7 +80,7 @@
             <p class="text-3xl">Mimmy Keel</p>
           </div>
           <button onclick="return hideContactFrom();" class="text-white">
-            X
+            <em class="fa-solid fa-xmark"></em>
           </button>
         </div>
         <div class="flex flex-col">

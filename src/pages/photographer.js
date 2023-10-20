@@ -18,9 +18,6 @@ async function getData(id) {
 
   return { choosedPhotographer, choosedMedias };
 }
-document
-  .getElementById('contact-form')
-  .addEventListener('submit', (e) => e.preventDefault());
 
 // allow to media modal
 async function showModal(medias, mediaId) {
